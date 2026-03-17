@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CryptoMind AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050810;--s:#0c1120;--b:#1e2d4a;--a:#00f5c4;--p:#7c3aed;--y:#f59e0b;--r:#ef4444;--g:#10b981;--t:#e2e8f0;--m:#64748b}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--t);font-family:'Syne',sans-serif;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 60% 40% at 10% 10%,rgba(0,245,196,.05) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 90% 90%,rgba(124,58,237,.06) 0%,transparent 60%)}
+.w{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:20px 16px}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;padding-bottom:16px;border-bottom:1px solid var(--b);flex-wrap:wrap;gap:10px}
+.brand{display:flex;align-items:center;gap:12px}
+.bi{width:44px;height:44px;background:linear-gradient(135deg,var(--a),var(--p));border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 0 24px rgba(0,245,196,.2)}
+.brand h1{font-size:20px;font-weight:800;letter-spacing:-.5px}
+.brand h1 span{color:var(--a)}
+.brand p{font-size:10px;color:var(--m);font-family:'Space Mono',monospace;letter-spacing:1.5px}
+.live{display:flex;align-items:center;gap:7px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.25);padding:6px 14px;border-radius:999px;font-size:11px;color:var(--g);font-family:'Space Mono',monospace}
+.dot{width:7px;height:7px;background:var(--g);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.ctrl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:18px;background:var(--s);border:1px solid var(--b);border-radius:14px;padding:14px 18px}
+.btn{border:none;padding:10px 22px;border-radius:9px;font-family:'Syne',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.bg{background:linear-gradient(135deg,var(--a),#00c49a);color:#050810}
+.bg:hover{transform:translateY(-1px);box-shadow:0 0 18px rgba(0,245,196,.35)}
+.bp{background:linear-gradient(135deg,var(--p),#9333ea);color:#fff}
+.bp:hover{transform:translateY(-1px);box-shadow:0 0 18px rgba(124,58,237,.4)}
+.btn:disabled{opacity:.45;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+#st{font-size:12px;color:var(--m);font-family:'Space Mono',monospace}
+.ov{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.oc{background:var(--s);border:1px solid var(--b);border-radius:12px;padding:14px 16px;transition:border-color .2s}
+.oc:hover{border-color:rgba(0,245,196,.3)}
+.ol{font-size:10px;color:var(--m);letter-spacing:1px;text-transform:uppercase;font-family:'Space Mono',monospace;margin-bottom:5px}
+.ov2{font-size:20px;font-weight:800;letter-spacing:-.5px}
+.os{font-size:11px;margin-top:3px;font-family:'Space Mono',monospace}
+.g2{display:grid;grid-template-columns:1fr 360px;gap:18px;margin-bottom:18px}
+@media(max-width:860px){.g2{grid-template-columns:1fr}}
+.pn{background:var(--s);border:1px solid var(--b);border-radius:14px;overflow:hidden}
+.ph{padding:13px 18px;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between}
+.pt{font-size:13px;font-weight:700;display:flex;align-items:center;gap:7px}
+.tag{font-size:10px;padding:2px 9px;border-radius:4px;background:rgba(0,245,196,.09);color:var(--a);border:1px solid rgba(0,245,196,.2);font-family:'Space Mono',monospace}
+table{width:100%;border-collapse:collapse}
+th{padding:9px 12px;font-size:10px;color:var(--m);text-transform:uppercase;letter-spacing:.8px;font-family:'Space Mono',monospace;background:rgba(0,0,0,.2);border-bottom:1px solid var(--b);text-align:right}
+th:first-child{text-align:left}
+td{padding:12px 12px;font-size:12px;font-family:'Space Mono',monospace;text-align:right;border-bottom:1px solid rgba(30,45,74,.4)}
+td:first-child{text-align:left;font-family:'Syne',sans-serif}
+tr:hover td{background:rgba(0,245,196,.02)}
+.cr{display:flex;align-items:center;gap:8px}
+.crk{font-size:10px;color:var(--m);width:16px;text-align:center}
+.crs{font-size:11px;font-weight:700;color:var(--a);font-family:'Space Mono',monospace}
+.crn{font-size:13px;font-weight:600}
+.sig{display:inline-block;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.5px;font-family:'Space Mono',monospace}
+.sb{background:rgba(16,185,129,.12);color:var(--g)}
+.sw{background:rgba(124,58,237,.12);color:#a78bfa}
+.sh{background:rgba(245,158,11,.12);color:var(--y)}
+.ss{background:rgba(239,68,68,.12);color:var(--r)}
+.pos{color:var(--g)}.neg{color:var(--r)}
+.ab{padding:18px;overflow-y:auto;max-height:520px;min-height:200px}
+.ab::-webkit-scrollbar{width:3px}
+.ab::-webkit-scrollbar-thumb{background:var(--b);border-radius:2px}
+.ae{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--m);text-align:center;padding:40px 20px}
+.ae .ico{font-size:44px}
+.as{margin-bottom:15px;padding-bottom:15px;border-bottom:1px solid rgba(30,45,74,.5)}
+.as:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0}
+.as h3{font-size:10px;font-weight:700;color:var(--a);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+.as p{font-size:12px;color:#94a3b8;line-height:1.85;font-family:'Space Mono',monospace}
+.tk{display:flex;align-items:center;gap:8px;color:var(--a);font-size:12px;font-family:'Space Mono',monospace;padding:10px 0}
+.da span{animation:blink 1.4s infinite}
+.da span:nth-child(2){animation-delay:.2s}
+.da span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:0}40%{opacity:1}}
+.g2b{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:600px){.g2b{grid-template-columns:1fr}}
+.li{display:flex;align-items:center;justify-content:space-between;padding:11px 18px;border-bottom:1px solid rgba(30,45,74,.4);font-size:13px}
+.li:last-child{border-bottom:none}
+.emp{padding:30px;text-align:center;color:var(--m);font-size:13px}
+.sp{width:34px;height:34px;border:3px solid var(--b);border-top-color:var(--a);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+footer{text-align:center;font-size:11px;color:#374151;margin-top:18px;padding-top:14px;border-top:1px solid var(--b);font-family:'Space Mono',monospace}
+</style>
+</head>
+<body>
+<div class="w">
+  <header>
+    <div class="brand">
+      <div class="bi">🧠</div>
+      <div>
+        <h1>Crypto<span>Mind</span> AI</h1>
+        <p>AGENTE DE MERCADO • TEMPO REAL</p>
+      </div>
+    </div>
+    <div class="live"><div class="dot"></div>AO VIVO</div>
+  </header>
+
+  <div class="ctrl">
+    <button class="btn bg" id="btnF" onclick="loadData()">⚡ Carregar Mercado</button>
+    <button class="btn bp" id="btnA" onclick="runAI()" disabled>🤖 Analisar com IA</button>
+    <div id="st">Clique em "Carregar Mercado" para iniciar</div>
+  </div>
+
+  <div class="ov">
+    <div class="oc"><div class="ol">Bitcoin</div><div class="ov2" id="v-btc">—</div><div class="os" id="c-btc" style="color:var(--m)">—</div></div>
+    <div class="oc"><div class="ol">Ethereum</div><div class="ov2" id="v-eth">—</div><div class="os" id="c-eth" style="color:var(--m)">—</div></div>
+    <div class="oc"><div class="ol">Solana</div><div class="ov2" id="v-sol">—</div><div class="os" id="c-sol" style="color:var(--m)">—</div></div>
+    <div class="oc"><div class="ol">BNB</div><div class="ov2" id="v-bnb">—</div><div class="os" id="c-bnb" style="color:var(--m)">—</div></div>
+    <div class="oc"><div class="ol">Sentimento</div><div class="ov2" id="v-sent" style="font-size:17px">—</div><div class="os" id="c-sent" style="color:var(--m)">—</div></div>
+  </div>
+
+  <div class="g2">
+    <div class="pn">
+      <div class="ph"><div class="pt">📊 Top Criptos — Preços Reais</div><span class="tag" id="src-tag">LIVE</span></div>
+      <div id="tbl"><div class="emp">Clique em "Carregar Mercado" para ver os dados</div></div>
+    </div>
+    <div class="pn" style="display:flex;flex-direction:column">
+      <div class="ph"><div class="pt">🤖 Análise da IA</div><span class="tag">CLAUDE AI</span></div>
+      <div class="ab" id="aiOut">
+        <div class="ae"><div class="ico">🔮</div><p>Carregue os dados e clique em <strong>"Analisar com IA"</strong> para análise completa do mercado.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2b">
+    <div class="pn">
+      <div class="ph"><div class="pt">🚀 Maiores Altas 24h</div></div>
+      <div id="gain"><div class="emp">Aguardando dados...</div></div>
+    </div>
+    <div class="pn">
+      <div class="ph"><div class="pt">📉 Maiores Quedas 24h</div></div>
+      <div id="loss"><div class="emp">Aguardando dados...</div></div>
+    </div>
+  </div>
+
+  <footer>⚠️ Apenas fins informativos. Não é conselho financeiro. Invista com responsabilidade.</footer>
+</div>
+
+<script>
+const META={BTC:{name:'Bitcoin'},ETH:{name:'Ethereum'},BNB:{name:'BNB'},SOL:{name:'Solana'},XRP:{name:'XRP'},ADA:{name:'Cardano'},DOGE:{name:'Dogecoin'},AVAX:{name:'Avalanche'},LINK:{name:'Chainlink'},DOT:{name:'Polkadot'},MATIC:{name:'Polygon'},UNI:{name:'Uniswap'}};
+let MD=[];
+
+const fp=p=>{if(!p&&p!==0)return'—';p=+p;if(p>=10000)return'$'+p.toLocaleString('en-US',{maximumFractionDigits:0});if(p>=100)return'$'+p.toFixed(1);if(p>=1)return'$'+p.toFixed(3);if(p>=.01)return'$'+p.toFixed(4);return'$'+p.toFixed(7)};
+const fc=p=>(p>=0?'+':'')+p.toFixed(2)+'%';
+const sig=c=>{if(c>7)return['COMPRAR','sb'];if(c>2)return['OBSERVAR','sw'];if(c>-2)return['MANTER','sh'];if(c>-7)return['CUIDADO','sh'];return['VENDER','ss']};
+
+async function tryBinance(){
+  const syms=Object.keys(META).map(s=>`"${s}USDT"`).join(',');
+  const r=await fetch(`https://data-api.binance.vision/api/v3/ticker/24hr?symbols=[${syms}]`);
+  if(!r.ok)throw new Error('Binance '+r.status);
+  const raw=await r.json();
+  return raw.map(i=>{const sym=i.symbol.replace('USDT','');const m=META[sym];if(!m)return null;return{sym,name:m.name,price:+i.lastPrice,ch24:+i.priceChangePercent,high:+i.highPrice,low:+i.lowPrice,vol:+i.quoteVolume}}).filter(Boolean);
+}
+
+async function tryGecko(){
+  const ids='bitcoin,ethereum,binancecoin,solana,ripple,cardano,dogecoin,avalanche-2,chainlink,polkadot,matic-network,uniswap';
+  const r=await fetch(`https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${ids}&order=market_cap_desc&per_page=12&page=1`);
+  if(!r.ok)throw new Error('CoinGecko '+r.status);
+  const j=await r.json();
+  const sm={bitcoin:'BTC',ethereum:'ETH',binancecoin:'BNB',solana:'SOL',ripple:'XRP',cardano:'ADA',dogecoin:'DOGE','avalanche-2':'AVAX',chainlink:'LINK',polkadot:'DOT','matic-network':'MATIC',uniswap:'UNI'};
+  return j.map(c=>({sym:sm[c.id]||c.symbol.toUpperCase(),name:c.name,price:c.current_price,ch24:c.price_change_percentage_24h||0,high:c.high_24h,low:c.low_24h,vol:c.total_volume}));
+}
+
+async function loadData(){
+  const btnF=document.getElementById('btnF'),btnA=document.getElementById('btnA'),st=document.getElementById('st');
+  btnF.disabled=true;btnF.textContent='⏳ Carregando...';
+  st.textContent='Conectando...';
+  document.getElementById('tbl').innerHTML='<div style="padding:40px;text-align:center"><div class="sp"></div><div style="color:var(--m);font-size:13px">Buscando preços reais...</div></div>';
+
+  let data=null,source='';
+  for(const[fn,label]of[[tryBinance,'BINANCE'],[tryGecko,'COINGECKO']]){
+    try{st.textContent=`Tentando ${label}...`;data=await fn();if(data?.length){source=label;break}}catch(e){console.warn(label,'falhou:',e.message)}
+  }
+
+  if(!data?.length){
+    st.textContent='❌ Erro ao carregar. Verifique sua conexão.';
+    document.getElementById('tbl').innerHTML='<div class="emp" style="color:var(--r)">❌ Não foi possível carregar. Tente novamente.</div>';
+    btnF.disabled=false;btnF.textContent='⚡ Tentar novamente';return;
+  }
+
+  MD=data;
+  document.getElementById('src-tag').textContent=source;
+  renderTable();renderOverview();renderGainLoss();
+  st.textContent=`✅ ${source} • ${new Date().toLocaleTimeString('pt-BR')}`;
+  btnA.disabled=false;btnF.disabled=false;btnF.textContent='⚡ Atualizar';
+}
+
+function renderOverview(){
+  const map={};MD.forEach(c=>map[c.sym]=c);
+  [['BTC','btc'],['ETH','eth'],['SOL','sol'],['BNB','bnb']].forEach(([sym,k])=>{
+    const c=map[sym];if(!c)return;
+    document.getElementById('v-'+k).textContent=fp(c.price);
+    const el=document.getElementById('c-'+k);
+    el.textContent=fc(c.ch24)+' (24h)';el.style.color=c.ch24>=0?'var(--g)':'var(--r)';
+  });
+  const avg=MD.reduce((s,c)=>s+c.ch24,0)/MD.length;
+  let si,sl,sc;
+  if(avg>5){si='🔥 BULL';sl='Forte alta';sc='var(--g)'}
+  else if(avg>1){si='📈 ALTA';sl='Tendência positiva';sc='var(--g)'}
+  else if(avg>-1){si='😐 NEUTRO';sl='Mercado lateral';sc='var(--m)'}
+  else if(avg>-5){si='📉 QUEDA';sl='Tendência negativa';sc='var(--r)'}
+  else{si='🧊 BEAR';sl='Forte queda';sc='var(--r)'}
+  document.getElementById('v-sent').innerHTML=`<span style="color:${sc}">${si}</span>`;
+  document.getElementById('c-sent').textContent=sl;
+}
+
+function renderTable(){
+  const order=['BTC','ETH','BNB','SOL','XRP','ADA','DOGE','AVAX','LINK','DOT','MATIC','UNI'];
+  const sorted=order.map(s=>MD.find(c=>c.sym===s)).filter(Boolean);
+  const rows=sorted.map((c,i)=>{
+    const[sl,sc]=sig(c.ch24);
+    return`<tr><td><div class="cr"><span class="crk">${i+1}</span><div><div class="crn">${c.name}</div><div class="crs">${c.sym}</div></div></div></td><td>${fp(c.price)}</td><td class="${c.ch24>=0?'pos':'neg'}">${fc(c.ch24)}</td>${c.high?`<td>${fp(c.high)}</td><td>${fp(c.low)}</td>`:'<td>—</td><td>—</td>'}<td><span class="sig ${sc}">${sl}</span></td></tr>`;
+  }).join('');
+  document.getElementById('tbl').innerHTML=`<div style="overflow-x:auto"><table><thead><tr><th style="text-align:left">Moeda</th><th>Preço</th><th>24h %</th><th>Máx</th><th>Mín</th><th>Sinal</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+function renderGainLoss(){
+  const s=[...MD].sort((a,b)=>b.ch24-a.ch24);
+  const row=c=>`<div class="li"><span><strong>${c.sym}</strong> <span style="color:var(--m);font-size:11px">${c.name}</span></span><span class="${c.ch24>=0?'pos':'neg'}" style="font-family:monospace">${fc(c.ch24)}</span></div>`;
+  document.getElementById('gain').innerHTML=s.slice(0,5).map(row).join('');
+  document.getElementById('loss').innerHTML=s.slice(-5).reverse().map(row).join('');
+}
+
+async function runAI(){
+  if(!MD.length)return;
+  const btnA=document.getElementById('btnA');
+  btnA.disabled=true;btnA.textContent='🧠 Analisando...';
+  const out=document.getElementById('aiOut');
+  out.innerHTML='<div class="tk"><div class="dot" style="background:var(--a)"></div>Agente IA analisando mercado<span class="da"><span>.</span><span>.</span><span>.</span></span></div>';
+
+  const snap=MD.map(c=>({moeda:`${c.name} (${c.sym})`,preco:fp(c.price),var_24h:fc(c.ch24),vol:'$'+(c.vol/1e9).toFixed(2)+'B'}));
+  const prompt=`Você é analista sênior de criptomoedas. Analise os dados REAIS abaixo e responda em português brasileiro.\n\nDADOS — ${new Date().toLocaleString('pt-BR')}:\n${JSON.stringify(snap,null,2)}\n\nResponda com exatamente estas 5 seções (use ### antes de cada título):\n\n### 🏆 CRIPTOS MAIS IMPORTANTES AGORA\n### 🚀 OPORTUNIDADES DE VALORIZAÇÃO\n### ⚠️ ALERTAS E RISCOS\n### 📊 SENTIMENTO DO MERCADO\n### 💡 ESTRATÉGIA RECOMENDADA`;
+
+  try{
+    const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const d=await r.json();
+    const t=d.content?.[0]?.text||'Sem resposta.';
+    const parts=t.split(/###\s*/g).filter(s=>s.trim());
+    if(parts.length<=1){out.innerHTML=`<div class="as"><p>${t.replace(/\n/g,'<br>')}</p></div>`}
+    else{out.innerHTML=parts.map(sec=>{const ls=sec.trim().split('\n');const title=ls[0].trim();const body=ls.slice(1).join('\n').trim().replace(/\*\*(.*?)\*\*/g,'<strong style="color:var(--a)">$1</strong>').replace(/\n/g,'<br>');return`<div class="as"><h3>${title}</h3><p>${body}</p></div>`}).join('')}
+  }catch(e){out.innerHTML=`<div style="color:var(--r);font-size:12px;padding:10px">❌ Erro IA: ${e.message}</div>`}
+  btnA.disabled=false;btnA.textContent='🤖 Analisar com IA';
+}
+</script>
+</body>
+</html>
